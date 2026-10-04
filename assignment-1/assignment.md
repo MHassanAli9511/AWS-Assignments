@@ -8,7 +8,7 @@ I configured the networking components required for public and private connectiv
 
 I then tested connectivity between the instances and configured CloudWatch monitoring and alarms.
 
-![AWS VPC Architecture and Monitoring Overview](<screenshots/AWS VPC Architecture and Monitoring Overview(1).png>)
+![AWS VPC Architecture and Monitoring Overview](<screenshots/AWS VPC Architecture and Monitoring Overview.png>)
 
 ---
 
