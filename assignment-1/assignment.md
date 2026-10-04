@@ -37,7 +37,6 @@ The Internet Gateway allows resources in the VPC to communicate with the interne
 
 <!-- IMAGE: Internet Gateway -->
 
-<!-- IMAGE: Internet Gateway attached to VPC -->
 
 ---
 
@@ -49,7 +48,6 @@ I associated the Elastic IP address with the NAT Gateway.
 
 The NAT Gateway was required so that the EC2 instance in the private subnet could make outbound connections to the internet without being directly exposed to incoming internet traffic.
 
-<!-- IMAGE: Elastic IP -->
 
 <!-- IMAGE: NAT Gateway -->
 
@@ -100,7 +98,6 @@ I also created an SSH key for accessing the instances.
 
 <!-- IMAGE: Public EC2 networking configuration -->
 
-<!-- IMAGE: Private EC2 networking configuration -->
 
 ---
 
@@ -146,9 +143,6 @@ Having a public IP address and a route through an Internet Gateway is not enough
 
 The security group must also allow traffic from the actual source of the connection.
 
-<!-- IMAGE: EC2 Instance Connect security group rule -->
-
-<!-- IMAGE: Successful EC2 Instance Connect session -->
 
 ---
 
@@ -160,9 +154,6 @@ I then used the public instance as a bastion host to SSH into the private EC2 in
 
 This allowed me to access the private instance without giving the private instance direct public access.
 
-<!-- IMAGE: Public EC2 terminal -->
-
-<!-- IMAGE: SSH connection from public EC2 to private EC2 -->
 
 ---
 
@@ -180,9 +171,8 @@ HTTP/2 200
 ```
 This showed that the request successfully reached the internet and received a response.
 It also provided evidence that the NAT Gateway configuration was working.
-<!-- IMAGE: curl command from private EC2 -->
 
-<!-- IMAGE: HTTP/2 200 response -->
+<!-- IMAGE: Successful EC2 Instance Connect session -->
 
 ---
 
@@ -224,7 +214,6 @@ This means the alarm would only trigger if two consecutive datapoints crossed th
 
 For example, if one datapoint recorded `85%` CPU usage but the next recorded `40%`, the alarm would not trigger.
 
-<!-- IMAGE: Datapoints to alarm configuration -->
 
 ---
 
@@ -238,7 +227,6 @@ I then created the same type of monitoring for the private EC2 instance.
 
 <!-- IMAGE: SNS/email notification configuration -->
 
-<!-- IMAGE: Public EC2 CloudWatch alarm -->
 
 <!-- IMAGE: Public and private EC2 alarms -->
 
@@ -258,7 +246,6 @@ The **CloudWatch Agent** can collect additional performance metrics and logs fro
 
 > **Note:** For this assignment, I enabled EC2 Detailed Monitoring. I did not configure the CloudWatch Agent.
 
-<!-- IMAGE: CloudWatch Agent comparison -->
 
 ---
 
