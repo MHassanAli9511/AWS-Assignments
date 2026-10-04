@@ -208,7 +208,7 @@ For this assignment, I monitored EC2 **CPU utilisation**.
 
 I configured the threshold so that CPU utilisation above `80%` would be considered an alarm condition.
 
-![CloudWatch 80 percent CPU threshold](<screenshots/80% CPU threshold.png>)
+![CloudWatch 80 percent CPU threshold](screenshots/80-percent-cpu-threshold.png)
 
 I also configured the alarm to use `2 out of 2` datapoints.
 
