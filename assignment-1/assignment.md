@@ -8,7 +8,7 @@ I configured the networking components required for public and private connectiv
 
 I then tested connectivity between the instances and configured CloudWatch monitoring and alarms.
 
-<!-- IMAGE: Final architecture diagram if you have one -->
+![AWS VPC Architecture and Monitoring Overview](<screenshots/AWS VPC Architecture and Monitoring Overview(1).png>)
 
 ---
 
@@ -18,14 +18,15 @@ I first created a custom VPC using the following CIDR block:
 
 - VPC: `10.0.0.0/16`
 
-<!-- IMAGE: VPC configuration -->
+![VPC configuration](<screenshots/VPC configuration.png>)
+
 
 I then created two subnets inside the VPC:
 
 - Public subnet: `10.0.0.0/24`
 - Private subnet: `10.0.1.0/24`
 
-<!-- IMAGE: Public and private subnet configuration -->
+![Public and private subnet configuration](<screenshots/Public and private subnet configuration.png>)
 
 ---
 
@@ -35,7 +36,7 @@ I created an Internet Gateway and attached it to my VPC.
 
 The Internet Gateway allows resources in the VPC to communicate with the internet when the correct routing and security rules are also configured.
 
-<!-- IMAGE: Internet Gateway -->
+![Internet Gateway attached to the VPC](<screenshots/Internet Gateway.png>)
 
 
 ---
@@ -48,8 +49,8 @@ I associated the Elastic IP address with the NAT Gateway.
 
 The NAT Gateway was required so that the EC2 instance in the private subnet could make outbound connections to the internet without being directly exposed to incoming internet traffic.
 
+![NAT Gateway configuration](<screenshots/NAT Gateway.png>)
 
-<!-- IMAGE: NAT Gateway -->
 
 ---
 
@@ -64,9 +65,10 @@ The route table contained:
 
 I then associated this route table with the public subnet.
 
-<!-- IMAGE: Public route table -->
+![Public route table](<screenshots/Public route table.png>)
 
-<!-- IMAGE: Public subnet association -->
+![Public subnet association](<screenshots/Public subnet association.png>)
+
 
 ---
 
@@ -96,7 +98,7 @@ I created two EC2 instances:
 
 I also created an SSH key for accessing the instances.
 
-<!-- IMAGE: Public EC2 networking configuration -->
+![Public EC2 networking configuration](<screenshots/Public EC2 networking configuration.png>)
 
 
 ---
@@ -172,7 +174,7 @@ HTTP/2 200
 This showed that the request successfully reached the internet and received a response.
 It also provided evidence that the NAT Gateway configuration was working.
 
-<!-- IMAGE: Successful EC2 Instance Connect session -->
+![Successful EC2 Instance Connect session](<screenshots/Successful EC2 Instance Connect session.png>)
 
 ---
 
@@ -186,9 +188,9 @@ I then enabled **Detailed Monitoring**.
 
 I repeated the same process for the private EC2 instance.
 
-<!-- IMAGE: EC2 Monitoring tab -->
+![EC2 Monitoring tab](<screenshots/EC2 Monitoring tab.png>)
 
-<!-- IMAGE: Enabling detailed monitoring -->
+![Enabling detailed monitoring](<screenshots/Enabling detailed monitoring.png>)
 
 ---
 
@@ -202,11 +204,11 @@ I learned that a CloudWatch alarm needs three main things:
 
 For this assignment, I monitored EC2 **CPU utilisation**.
 
-<!-- IMAGE: Selecting CPUUtilization metric -->
+![Selecting CPUUtilization metric](<screenshots/Selecting CPUUtilization metric.png>)
 
 I configured the threshold so that CPU utilisation above `80%` would be considered an alarm condition.
 
-<!-- IMAGE: 80% CPU threshold -->
+![CloudWatch 80 percent CPU threshold](<screenshots/80% CPU threshold.png>)
 
 I also configured the alarm to use `2 out of 2` datapoints.
 
@@ -225,10 +227,9 @@ I gave the alarm a name and description and completed the configuration.
 
 I then created the same type of monitoring for the private EC2 instance.
 
-<!-- IMAGE: SNS/email notification configuration -->
+![SNS email notification configuration](<screenshots/SNS email notification configuration.png>)
 
-
-<!-- IMAGE: Public and private EC2 alarms -->
+![Public and private EC2 CloudWatch alarms](<screenshots/Public and private EC2 alarms.png>)
 
 ---
 
