@@ -9,7 +9,7 @@ I created additional public and private subnets, launched two EC2 web servers, c
 
 I also configured dynamic scaling based on CPU utilisation and tested the Auto Scaling Group by terminating an instance and confirming that AWS automatically launched a replacement.
 
-<!-- IMAGE: Final architecture diagram -->
+![Assignment 2 architecture](<screenshots/Final architecture diagram.png>)
 
 ---
 
@@ -19,16 +19,16 @@ I reused the VPC environment from Assignment 1 instead of creating a new network
 
 To improve availability, I created an additional public subnet in a different Availability Zone.
 
-<!-- IMAGE: Public subnet B  second Availability Zone -->
+![Public subnet B in second Availability Zone](screenshots/public-subnet-b.png)
+
 
 Because the original public subnet already had a configured public route table, I did not need to create another route table.
 
 Instead, I associated the new public subnet with the existing public route table.
 
-<!-- IMAGE: Public subnet route table association -->
+![Public subnet route table association](<screenshots/Public subnet route table association.png>)
 
 I followed the same approach for the private subnet by creating another private subnet in a different Availability Zone.
-
 
 This gave me public and private subnets across multiple Availability Zones.
 
@@ -64,7 +64,7 @@ I created a dedicated security group for the Application Load Balancer.
 
 The ALB security group allowed HTTP traffic on port `80` from IPv4 addresses.
 
-<!-- IMAGE: ALB security group -->
+![Application Load Balancer security group](<screenshots/ALB security group.png>)
 
 I then updated the EC2 security group so that HTTP traffic was allowed from the ALB security group.
 
@@ -72,7 +72,7 @@ This means the backend EC2 instances do not need to accept HTTP traffic directly
 
 Instead, traffic reaches them through the Application Load Balancer.
 
-<!-- IMAGE: EC2 security group allowing ALB security group -->
+![EC2 security group allowing ALB traffic](<screenshots/EC2 security group allowing ALB security group.png>)
 
 ---
 
@@ -102,11 +102,12 @@ The target group configuration used:
 
 I registered both EC2 A and EC2 B as targets.
 
-<!-- IMAGE: EC2 A and B registered as targets -->
+![EC2 A and B registered as targets](<screenshots/EC2 A and B registered as targets.png>)
+
 
 After creating the target group, AWS showed both targets as healthy.
 
-<!-- IMAGE: Healthy target group -->
+![Healthy target group](<screenshots/Healthy target group.png>)
 
 ---
 
@@ -114,7 +115,7 @@ After creating the target group, AWS showed both targets as healthy.
 
 I configured the Application Load Balancer listener to forward HTTP traffic to the target group.
 
-<!-- IMAGE: ALB listener forwarding to target group -->
+![ALB listener forwarding to target group](<screenshots/ALB listener forwarding to target group.png>)
 
 This created the following traffic flow:
 
@@ -141,7 +142,7 @@ When I refreshed the page, the response changed between EC2 A and EC2 B.
 
 This demonstrated that the Application Load Balancer was distributing requests across both backend instances.
 
-<!-- IMAGE/VIDEO: ALB DNS test showing EC2 A and EC2 B -->
+![ALB DNS test showing EC2 A and EC2 B](screenshots/alb-dns-test.gif)
 
 ---
 
@@ -153,7 +154,7 @@ I first created a launch template.
 
 The launch template defines the configuration AWS should use when the Auto Scaling Group needs to create new EC2 instances.
 
-<!-- IMAGE: Launch template configuration -->
+![Launch template configuration](<screenshots/Launch template configuration.png>)
 
 ---
 
@@ -161,11 +162,11 @@ The launch template defines the configuration AWS should use when the Auto Scali
 
 I created an Auto Scaling Group using the launch template.
 
-<!-- IMAGE: ASG using launch template -->
+![Auto Scaling Group using launch template](<screenshots/ASG using launch template.png>)
 
 I selected the existing VPC and configured the Auto Scaling Group to use the two private subnets in different Availability Zones.
 
-<!-- IMAGE: ASG subnet and Availability Zone configuration -->
+![Auto Scaling Group subnet and Availability Zone configuration](<screenshots/ASG subnet and Availability Zone configuration.png>)
 
 This allows the Auto Scaling Group to distribute instances across multiple Availability Zones.
 
@@ -179,7 +180,7 @@ I configured the Auto Scaling Group with:
 - Desired capacity: 2
 - Maximum capacity: 4
 
-<!-- IMAGE: Minimum, desired and maximum capacity -->
+![Minimum desired and maximum capacity](<screenshots/Minimum, desired and maximum capacity.png>)
 
 The minimum capacity ensures that AWS maintains at least two running instances.
 
@@ -193,7 +194,7 @@ The maximum capacity prevents the group from scaling beyond four instances.
 
 I attached the Auto Scaling Group to the existing Application Load Balancer target group.
 
-<!-- IMAGE: ASG attached to target group -->
+![Auto Scaling Group attached to target group](<screenshots/ASG attached to target group.png>)
 
 This means that new EC2 instances launched by the Auto Scaling Group can automatically become part of the load-balanced application.
 
@@ -209,7 +210,7 @@ I configured the target value as:
 
 `50%`
 
-<!-- IMAGE: Target tracking scaling policy -->
+![Target tracking scaling policy](<screenshots/Target tracking scaling policy.png>)
 
 A scaling policy tells the Auto Scaling Group when it should increase or decrease the number of EC2 instances.
 
@@ -230,9 +231,10 @@ After configuring the Auto Scaling Group, I checked the EC2 instances and target
 
 The environment contained multiple running EC2 instances, and the target group reported them as healthy.
 
-<!-- IMAGE: EC2 instances created by ASG -->
+![EC2 instances created by Auto Scaling Group](<screenshots/EC2 instances created by ASG.png>)
 
-<!-- IMAGE: Healthy targets -->
+![Healthy Auto Scaling targets](<screenshots/Healthy targets.png>)
+
 
 ---
 
@@ -242,7 +244,7 @@ To test the Auto Scaling Group, I manually terminated one of the managed EC2 ins
 
 Because the Auto Scaling Group was configured to maintain its required capacity, AWS automatically launched another EC2 instance to replace the terminated instance.
 
-<!-- IMAGE: Replacement EC2 instance launching -->
+![Replacement EC2 instance launching](<screenshots/Replacement EC2 instance launching.png>)
 
 This demonstrated that Auto Scaling provides self-healing behaviour as well as scaling.
 
