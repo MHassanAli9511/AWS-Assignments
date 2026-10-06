@@ -16,7 +16,7 @@ I also implemented several bonus features including:
 - API keys and usage plans
 - AWS WAF rate limiting
 
-<!-- IMAGE: Final architecture diagram -->
+![Final architecture diagram](<screenshots/Final architecture diagram.png>)
 
 ---
 
@@ -38,7 +38,8 @@ Each submission stored in DynamoDB contains:
 - A timestamp
 - The submitted payload
 
-<!-- IMAGE: DynamoDB students table configuration -->
+![DynamoDB students table configuration](<screenshots/DynamoDB students table configuration.png>)
+
 
 ---
 
@@ -59,9 +60,9 @@ Its purpose was to:
 5. Store the resulting item in DynamoDB
 6. Return a JSON response
 
-<!-- IMAGE: student-submit Lambda creation -->
+![Student submit Lambda creation](<screenshots/student-submit Lambda creation.png>)
 
-<!-- IMAGE: Lambda POST code -->
+![Lambda POST code](<screenshots/Lambda POST code.png>)
 
 The function used the AWS SDK for Python, `boto3`, to communicate with DynamoDB.
 
@@ -92,9 +93,9 @@ The POST Lambda only needed permission to perform:
 
 against the specific `students` table.
 
-<!-- IMAGE: Lambda execution role -->
+![Lambda execution role](<screenshots/Lambda execution role.png>)
 
-<!-- IMAGE: DynamoDB PutItem IAM policy -->
+![DynamoDB PutItem IAM policy](<screenshots/DynamoDB PutItem IAM policy.png>)
 
 This follows the principle of least privilege because the Lambda function only receives the permissions required to perform its task.
 
@@ -126,7 +127,7 @@ Before connecting API Gateway, I tested the Lambda function by itself.
 
 This allowed me to verify the Lambda-to-DynamoDB connection independently.
 
-<!-- IMAGE: Successful Lambda test -->
+![Successful Lambda test](<screenshots/Successful Lambda test.png>)
 
 The Lambda test returned:
 
@@ -138,7 +139,7 @@ I then checked:
 
 and confirmed that the item had been successfully stored.
 
-<!-- IMAGE: DynamoDB record created by Lambda -->
+![DynamoDB record created by Lambda](<screenshots/DynamoDB record created by Lambda.png>)
 
 The table contained:
 
@@ -162,7 +163,7 @@ API Gateway acts as the public entry point for the backend.
 
 It allows external clients such as `curl`, applications, or a frontend website to invoke the Lambda function through standard HTTP requests.
 
-<!-- IMAGE: REST API configuration -->
+![REST API configuration](<screenshots/REST API configuration.png>)
 
 ---
 
@@ -180,7 +181,7 @@ method.
 
 The POST method used Lambda proxy integration and invoked the `student-submit` Lambda function.
 
-<!-- IMAGE: POST submit integration -->
+![POST submit integration](<screenshots/POST submit integration.png>)
 
 The request flow became:
 
@@ -221,7 +222,7 @@ An origin is made up of:
 
 `protocol + domain + port`
 
-<!-- IMAGE: API Gateway CORS configuration -->
+![API Gateway CORS configuration](<screenshots/API Gateway CORS configuration.png>)
 
 Because I was using Lambda proxy integration, the Lambda response also included the CORS header:
 
@@ -243,7 +244,7 @@ I deployed the REST API to a stage called:
 
 A stage represents a deployed environment of an API.
 
-<!-- IMAGE: API deployment to prod -->
+![API deployment to prod](<screenshots/API deployment to prod.png>)
 
 The deployed API could then be accessed using its API Gateway invoke URL.
 
@@ -255,7 +256,7 @@ I tested the API using `curl`.
 
 The request submitted JSON data to the API.
 
-<!-- IMAGE: Successful POST curl test -->
+![Successful POST curl test](<screenshots/Successful POST curl test.png>)
 
 The successful flow was:
 
@@ -275,11 +276,11 @@ Response returned to curl
 
 I then checked DynamoDB and confirmed that the new record had been stored successfully.
 
-<!-- IMAGE: DynamoDB records after API POST -->
+![DynamoDB records after API POST](<screenshots/DynamoDB records after API POST.png>)
 
 I also checked the Lambda CloudWatch logs and confirmed that the invocation had been logged.
 
-<!-- IMAGE: Lambda CloudWatch logs -->
+![Lambda CloudWatch logs](<screenshots/Lambda CloudWatch logs.png>)
 
 ---
 
@@ -323,7 +324,7 @@ I added an inline IAM policy allowing:
 
 on the specific `students` table.
 
-<!-- IMAGE: DynamoDB Scan IAM policy -->
+![DynamoDB Scan IAM policy](<screenshots/DynamoDB Scan IAM policy.png>)
 
 This means the GET Lambda can read records but cannot write, delete or modify them.
 
@@ -340,11 +341,11 @@ students = response.get("Items", [])
 
 The `scan()` operation retrieves the items stored in the table.
 
-<!-- IMAGE: GET Lambda code -->
+![GET Lambda code](<screenshots/GET Lambda code.png>)
 
 I tested the function and confirmed that it returned the existing student records.
 
-<!-- IMAGE: Successful GET Lambda test -->
+![Successful GET Lambda test](<screenshots/Successful GET Lambda test.png>)
 
 ---
 
@@ -360,7 +361,7 @@ The GET method used Lambda proxy integration and invoked the new read-only Lambd
 
 I also enabled CORS.
 
-<!-- IMAGE: GET students API Gateway resource -->
+![GET students API Gateway resource](<screenshots/GET students API Gateway resource.png>)
 
 I redeployed the API to the existing:
 
@@ -406,7 +407,7 @@ Lambda
 DynamoDB
 ```
 
-<!-- IMAGE: API key configuration -->
+![API key configuration](<screenshots/API key configuration.png>)
 
 I created:
 
@@ -415,7 +416,7 @@ I created:
 
 I associated the usage plan with the `prod` stage and attached the API key to the usage plan.
 
-<!-- IMAGE: Usage plan prod stage association -->
+![Usage plan prod stage association](<screenshots/Usage plan prod stage association.png>)
 
 ---
 
@@ -441,7 +442,7 @@ I first sent a request without an API key.
 
 The API rejected the request.
 
-<!-- IMAGE: API request without key rejected -->
+![API request without key rejected](<screenshots/API request without key rejected.png>)
 
 I then sent the same request with a valid API key using the:
 
@@ -451,11 +452,11 @@ header.
 
 The request succeeded.
 
-<!-- IMAGE: GET request with API key successful -->
+![GET request with API key successful](<screenshots/GET request with API key successful.png>)
 
 I also tested the POST endpoint with the API key and confirmed that it worked.
 
-<!-- IMAGE: POST request with API key successful -->
+![POST request with API key successful](<screenshots/POST request with API key successful.png>)
 
 This demonstrated that API Gateway was enforcing the API key requirement before Lambda was invoked.
 
@@ -497,7 +498,7 @@ AWS WAF provides security filtering and can block traffic based on rules such as
 
 I created a WAF protection pack / Web ACL and associated it with the API Gateway `prod` stage.
 
-<!-- IMAGE: API Gateway prod stage associated with WAF -->
+![API Gateway prod stage associated with WAF](<screenshots/API Gateway prod stage associated with WAF.png>)
 
 I chose to build my own rule rather than use a larger managed rule package.
 
@@ -505,7 +506,7 @@ I then selected a:
 
 `Rate-based rule`
 
-<!-- IMAGE: WAF rate-based rule selection -->
+![WAF rate-based rule selection](<screenshots/WAF rate-based rule selection.png>)
 
 ---
 
@@ -518,7 +519,7 @@ I configured the WAF rule with:
 - Evaluation window: 1 minute
 - Request aggregation: Source IP address
 
-<!-- IMAGE: WAF rate-limit configuration -->
+![WAF rate-limit configuration](<screenshots/WAF rate-limit configuration.png>)
 
 This means WAF monitors traffic by source IP and can block a source that exceeds the configured request rate.
 
@@ -528,7 +529,7 @@ This means WAF monitors traffic by source IP and can block a source that exceeds
 
 I created a shell script to repeatedly send requests to the API.
 
-<!-- IMAGE: WAF test script -->
+![WAF test script](<screenshots/WAF test script.png>)
 
 The script repeatedly called:
 
@@ -544,11 +545,11 @@ After the WAF rate limit was exceeded, requests began returning:
 
 `403`
 
-<!-- IMAGE: WAF 403 terminal result -->
+![WAF 403 terminal result](<screenshots/WAF 403 terminal result.png>)
 
 This confirmed that AWS WAF was successfully blocking requests after the configured rate threshold had been exceeded.
 
-<!-- IMAGE: WAF request metrics -->
+![WAF request metrics](<screenshots/WAF request metrics.png>)
 
 After testing, I removed the Web ACL so it would not continue generating unnecessary costs.
 
